@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".NewPageActivity">
+
+    <LinearLayout
+        android:layout_width="385dp"
+        android:layout_height="805dp"
+        android:background="#C3C3C3"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/ratingheader"
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:lineSpacingExtra="18sp"
+            android:text="Give Us a Movie Rating"
+            android:textColor="#AC1E1E"
+            android:textSize="30sp"
+            app:fontFamily="casual" />
+
+        <EditText
+            android:id="@+id/entermoviename"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Enter Movie Name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/enterDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="mm/dd/yyyy"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/enterRating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Rating Out of 10"
+            android:inputType="numberDecimal" />
+
+        <TextView
+            android:id="@+id/checkboxheader"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text="What did you like about the Movie?"
+            android:textColor="#AA4646"
+            android:textSize="18sp"
+            app:fontFamily="casual" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="536dp"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/checkDirecting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Good Directing" />
+
+            <CheckBox
+                android:id="@+id/checkStory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Good Story" />
+
+            <CheckBox
+                android:id="@+id/checkActing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Good Acting" />
+
+            <CheckBox
+                android:id="@+id/checkAnimation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nice Animation" />
+
+            <CheckBox
+                android:id="@+id/checkStorybuilding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nice Storybuilding" />
+
+            <CheckBox
+                android:id="@+id/checkYearn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Left you Yearning for more" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/backButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Back" />
+
+                <Button
+                    android:id="@+id/submitButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="submit"
+                    android:text="Submit" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/test"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="test" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
