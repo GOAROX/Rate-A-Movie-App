@@ -31,7 +31,7 @@ public class NewPageActivity extends AppCompatActivity {
     private Boolean acting;
     private Boolean storybuilding;
     private Boolean yearn;
-    private int rating;
+    private float rating;
 
     //private TextView MovieName;
 
@@ -77,6 +77,21 @@ public class NewPageActivity extends AppCompatActivity {
         simpleCheckBox = (CheckBox) findViewById(R.id.checkYearn);
         yearn = simpleCheckBox.isChecked();
 
+        Intent intent = new Intent(this, ReportScreenActivity.class);
+        intent.putExtra("movieName", movieName);
+        intent.putExtra("date", date.getTime());
+        intent.putExtra("rating", rating);
+        intent.putExtra("direction", direction);
+        intent.putExtra("story", story);
+        intent.putExtra("animation", animation);
+        intent.putExtra("acting", acting);
+        intent.putExtra("storybuilding", storybuilding);
+        intent.putExtra("yearn", yearn);
+        // Add other variables as extras...
+
+        // Start the next activity
+        startActivity(intent);
+
     }
 
     private boolean validateMovieName() {
@@ -118,8 +133,9 @@ public class NewPageActivity extends AppCompatActivity {
             return false;
         }
         try {
-            rating = Integer.parseInt(ratingString);
-            if (rating < 0 || rating > 10) {
+            rating = Float.parseFloat(ratingString);
+            //rating = Integer.parseInt(ratingString);
+            if (rating < 0.0 || rating > 10.0) {
                 Toast.makeText(this, "Rating should be between 0 and 10", Toast.LENGTH_SHORT).show();
                 return false;
             }

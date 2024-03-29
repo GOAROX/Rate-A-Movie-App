@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">My First App</string>
     <string name="this_is_the_new_page">This is the New Page</string>
+    <string name="title_activity_report_screen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
