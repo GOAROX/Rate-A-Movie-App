@@ -8,12 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ListView;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,15 +21,14 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Date;
+import java.util.ArrayList;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class ReportScreenActivity extends AppCompatActivity {
+public class RatingsList extends AppCompatActivity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -110,22 +108,16 @@ public class ReportScreenActivity extends AppCompatActivity {
         }
     };
 
-    private String movieName;
-    private String dateWatched;
-    private Date date;
-    private Boolean direction;
-    private Boolean story;
-    private Boolean animation;
-    private Boolean acting;
-    private Boolean storybuilding;
-    private Boolean yearn;
-    private float rating;
+    private ListView listView;
+    private MovieAdapter adapter;
+    private ArrayList<Movie> movieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("success", "inside ratings list class");
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_report_screen);
+        setContentView(R.layout.activity_ratings_list);
 
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
@@ -142,67 +134,37 @@ public class ReportScreenActivity extends AppCompatActivity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        findViewById(R.id.back_button).setOnTouchListener(mDelayHideTouchListener);
+        findViewById(R.id.back_to_main).setOnTouchListener(mDelayHideTouchListener);
 
-        Button switchButt = findViewById(R.id.back_button); // Replace "switch" with your button's ID
+        Button switchButt = findViewById(R.id.back_to_main); // Replace "switch" with your button's ID
 
         switchButt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Create an Intent to start the NewPageActivity
-                Intent intent = new Intent(ReportScreenActivity.this, MainActivity.class);
+                Intent intent = new Intent(RatingsList.this, MainActivity.class);
                 startActivity(intent);
             }
         });
 
-        Intent intent = getIntent();
-        movieName = intent.getStringExtra("movieName");
-        long dateInMillis = intent.getLongExtra("date", 0); // Default value if not found
-        rating = intent.getFloatExtra("rating", 0);
-        // Convert long value back to Date object
-        date = new Date(dateInMillis);
-        dateWatched = date.toString();
-        direction = intent.getBooleanExtra("direction", false); // Default value if not found
-        story = intent.getBooleanExtra("story", false); // Default value if not found
-        animation = intent.getBooleanExtra("animation", false); // Default value if not found
-        acting = intent.getBooleanExtra("acting", false); // Default value if not found
-        storybuilding = intent.getBooleanExtra("storybuilding", false); // Default value if not found
-        yearn = intent.getBooleanExtra("yearn", false); // Default value if not found
+        listView = findViewById(R.id.listview);
+        movieList = new ArrayList<>();
+        adapter = new MovieAdapter(this, movieList);
+        listView.setAdapter(adapter);
 
-        //now make a function in here to print the values on screen and the a back button to go to home screen
-        TextView textView = findViewById(R.id.printMovieName);
-        textView.setText(movieName);
-        textView = findViewById(R.id.printDate);
-        textView.setText(date.toString());
-        textView = findViewById(R.id.printRating);
-        textView.setText(String.valueOf(rating));
-
-        // Read existing JSON content from file, if any
-        JSONArray existingJsonArray = readExistingJsonFromFile();
-
-        // Create a JSON object for the current data entry
-        JSONObject jsonObject = createJsonObject();
-
-        // Add the new JSON object to the existing JSON array
-        existingJsonArray.put(jsonObject);
-
-        // Write the updated JSON array back to the file
-        writeJsonToFile(existingJsonArray);
+        // Read JSON data from file and populate movieList
+        readJsonFromFile();
 
     }
 
-    private JSONArray readExistingJsonFromFile() {
+    private void readJsonFromFile() {
         // Create a file object for the JSON file
+        Log.d("success", "inside ratings list class");
         File file = new File(getFilesDir(), "data.json");
 
-        // Initialize an empty JSON array
-        JSONArray jsonArray = new JSONArray();
-
-        Log.d("success", "trying to read data.json");
-        // Read existing JSON content from file, if any
-        if (file.exists()) {
-            Log.d("success", "file data.json already exists hence reading");
-            try {
+        try {
+            // Read existing JSON content from file
+            if (file.exists()) {
                 BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
                 StringBuilder stringBuilder = new StringBuilder();
                 String line;
@@ -210,55 +172,34 @@ public class ReportScreenActivity extends AppCompatActivity {
                     stringBuilder.append(line);
                 }
                 bufferedReader.close();
-                jsonArray = new JSONArray(stringBuilder.toString());
-            } catch (IOException | JSONException e) {
-                e.printStackTrace();
-            }
-        }
 
-        return jsonArray;
-    }
+                // Parse JSON array
+                JSONArray jsonArray = new JSONArray(stringBuilder.toString());
 
-    private JSONObject createJsonObject() {
-        // Create a JSON object for the current data entry
-        Log.d("success", "created json object");
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("movieName", movieName);
-            jsonObject.put("dateWatched", dateWatched);
-            //jsonObject.put("date", date.getTime()); // Store date as timestamp
-            jsonObject.put("direction", direction);
-            jsonObject.put("story", story);
-            jsonObject.put("animation", animation);
-            jsonObject.put("acting", acting);
-            jsonObject.put("storybuilding", storybuilding);
-            jsonObject.put("yearn", yearn);
-            jsonObject.put("rating", rating);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonObject;
-    }
+                // Iterate through JSON array and extract movie information
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    String movieName = jsonObject.getString("movieName");
+                    String dateWatched = jsonObject.getString("dateWatched");
+                    float rating = (float) jsonObject.getDouble("rating");
 
-    private void writeJsonToFile(JSONArray jsonArray) {
-        // Create a file object for the JSON file
-        Log.d("success", "about to write to file");
-        File file = new File(getFilesDir(), "data.json");
+                    // Extract true boolean values
+                    boolean direction = jsonObject.getBoolean("direction");
+                    boolean story = jsonObject.getBoolean("story");
+                    boolean animation = jsonObject.getBoolean("animation");
+                    boolean acting = jsonObject.getBoolean("acting");
+                    boolean storybuilding = jsonObject.getBoolean("storybuilding");
+                    boolean yearn = jsonObject.getBoolean("yearn");
 
-        // Write the updated JSON array back to the file
-        try {
-            if (!file.exists()) {
-                boolean created = file.createNewFile();
-                if (!created) {
-                    Toast.makeText(this, "Failed to Create File", Toast.LENGTH_SHORT).show();
-                    return;
+                    // Add movie to movieList
+                    movieList.add(new Movie(movieName, dateWatched, rating, direction, story, animation, acting, storybuilding, yearn));
                 }
-                Log.d("success", "created file data.json");
+
+                // Notify adapter of data change
+                adapter.notifyDataSetChanged();
             }
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(jsonArray.toString());
-            fileWriter.close();
-        } catch (IOException e) {
+        } catch (IOException | JSONException e) {
+            Log.d("no file", "there is no file called data.json");
             e.printStackTrace();
         }
     }

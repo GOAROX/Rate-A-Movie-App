@@ -4,12 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -63,35 +61,35 @@ public class NewPageActivity extends AppCompatActivity {
             Toast.makeText(this, "Movie Name: " + movieName, Toast.LENGTH_SHORT).show();
             Toast.makeText(this, "Date Watched: " + date, Toast.LENGTH_SHORT).show();
             Toast.makeText(this, "Rating: " + rating, Toast.LENGTH_SHORT).show();
+
+            CheckBox simpleCheckBox = (CheckBox) findViewById(R.id.checkDirecting);
+            direction = simpleCheckBox.isChecked();
+            simpleCheckBox = (CheckBox) findViewById(R.id.checkStory);
+            story = simpleCheckBox.isChecked();
+            simpleCheckBox = (CheckBox) findViewById(R.id.checkAnimation);
+            animation = simpleCheckBox.isChecked();
+            simpleCheckBox = (CheckBox) findViewById(R.id.checkActing);
+            acting = simpleCheckBox.isChecked();
+            simpleCheckBox = (CheckBox) findViewById(R.id.checkStorybuilding);
+            storybuilding = simpleCheckBox.isChecked();
+            simpleCheckBox = (CheckBox) findViewById(R.id.checkYearn);
+            yearn = simpleCheckBox.isChecked();
+
+            Intent intent = new Intent(this, ReportScreenActivity.class);
+            intent.putExtra("movieName", movieName);
+            intent.putExtra("date", date.getTime());
+            intent.putExtra("rating", rating);
+            intent.putExtra("direction", direction);
+            intent.putExtra("story", story);
+            intent.putExtra("animation", animation);
+            intent.putExtra("acting", acting);
+            intent.putExtra("storybuilding", storybuilding);
+            intent.putExtra("yearn", yearn);
+            // Add other variables as extras...
+
+            // Start the next activity
+            startActivity(intent);
         }
-        CheckBox simpleCheckBox = (CheckBox) findViewById(R.id.checkDirecting);
-        direction = simpleCheckBox.isChecked();
-        simpleCheckBox = (CheckBox) findViewById(R.id.checkStory);
-        story = simpleCheckBox.isChecked();
-        simpleCheckBox = (CheckBox) findViewById(R.id.checkAnimation);
-        animation = simpleCheckBox.isChecked();
-        simpleCheckBox = (CheckBox) findViewById(R.id.checkActing);
-        acting = simpleCheckBox.isChecked();
-        simpleCheckBox = (CheckBox) findViewById(R.id.checkStorybuilding);
-        storybuilding = simpleCheckBox.isChecked();
-        simpleCheckBox = (CheckBox) findViewById(R.id.checkYearn);
-        yearn = simpleCheckBox.isChecked();
-
-        Intent intent = new Intent(this, ReportScreenActivity.class);
-        intent.putExtra("movieName", movieName);
-        intent.putExtra("date", date.getTime());
-        intent.putExtra("rating", rating);
-        intent.putExtra("direction", direction);
-        intent.putExtra("story", story);
-        intent.putExtra("animation", animation);
-        intent.putExtra("acting", acting);
-        intent.putExtra("storybuilding", storybuilding);
-        intent.putExtra("yearn", yearn);
-        // Add other variables as extras...
-
-        // Start the next activity
-        startActivity(intent);
-
     }
 
     private boolean validateMovieName() {

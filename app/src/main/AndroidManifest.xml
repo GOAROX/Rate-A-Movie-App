@@ -2,17 +2,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myfirstapp">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@drawable/test_icon"
+        android:label="Movie Ratings"
+        android:roundIcon="@drawable/test_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".RatingsList"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="Ratings List"
+            android:theme="@style/FullscreenTheme"></activity>
+        <activity
             android:name=".ReportScreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_report_screen"
+            android:label="Report Screen"
             android:theme="@style/FullscreenTheme" />
         <activity android:name=".NewPageActivity" />
         <activity android:name=".MainActivity">

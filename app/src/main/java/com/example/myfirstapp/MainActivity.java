@@ -8,9 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Button;
 import android.view.*;
-
-import java.util.Timer;
-import java.util.TimerTask;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,6 +17,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ImageView imageView = findViewById(R.id.imageView3);
+        imageView.setImageResource(R.drawable.new_icon);
+
+
         Button switchButt = findViewById(R.id.switchbutton); // Replace "switch" with your button's ID
 
         switchButt.setOnClickListener(new View.OnClickListener() {
@@ -26,6 +28,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Create an Intent to start the NewPageActivity
                 Intent intent = new Intent(MainActivity.this, NewPageActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button viewRatingsButt = findViewById(R.id.viewRatingsButton); // Replace "switch" with your button's ID
+
+        viewRatingsButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create an Intent to start the NewPageActivity
+                Intent intent = new Intent(MainActivity.this, RatingsList.class);
                 startActivity(intent);
             }
         });
